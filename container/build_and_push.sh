@@ -26,8 +26,8 @@ fi
 
 # Get the region defined in the current configuration (default to us-west-2 if none defined)
 region=$(aws configure get region)
-region=${region:-us-west-2}
-
+#region=${region:-us-west-1}
+echo ${region}
 
 fullname="${account}.dkr.ecr.${region}.amazonaws.com/${image}:latest"
 
