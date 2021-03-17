@@ -11,7 +11,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libpng-dev && \
   rm -rf /var/lib/apt/lists/*
 
-
 RUN curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
   chmod +x ~/miniconda.sh && \
   ~/miniconda.sh -b -p /opt/conda && \
@@ -56,11 +55,11 @@ WORKDIR /self-supervised-speech-recognition/libs/wav2letter/bindings/python
 ENV KENLM_ROOT_DIR=/self-supervised-speech-recognition/libs/kenlm
 RUN rm -rf build
 RUN pip install -e .
-RUN pip uninstall numpy
+RUN pip uninstall -y numpy
 RUN pip install numpy
 RUN pip install wandb editdistance gdown sklearn
 
-RUN apt-get install -y tmux vim unzip
+RUN apt-get install -y tmux vim unzip wget
 
 RUN conda install -c conda-forge jupyterlab
 
@@ -84,3 +83,5 @@ ENV PATH="/self-supervised-speech-recognition:${PATH}"
 
 # Set up the program in the image
 COPY train /self-supervised-speech-recognition/
+RUN chmod +x train
+ENV PATH="/self-supervised-speech-recognition/train:${PATH}"
