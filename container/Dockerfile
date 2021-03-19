@@ -48,6 +48,8 @@ WORKDIR build
 RUN cmake ..
 RUN make -j 4
 
+#RUN apt install clang-9 clang-tools-9 clang-tidy-9 clang-format-9
+
 RUN pip install packaging
 WORKDIR /self-supervised-speech-recognition/libs
 RUN git clone -b v0.2 https://github.com/facebookresearch/wav2letter.git
@@ -57,15 +59,13 @@ RUN rm -rf build
 RUN pip install -e .
 RUN pip uninstall -y numpy
 RUN pip install numpy
-RUN pip install wandb editdistance gdown sklearn
+RUN pip install wandb editdistance gdown sklearn deepspeed awscli
 
 RUN apt-get install -y tmux vim unzip wget
 
 RUN conda install -c conda-forge jupyterlab
 
 WORKDIR /self-supervised-speech-recognition/
-
-RUN wget https://dl.fbaipublicfiles.com/fairseq/wav2vec/wav2vec_small.pt
 
 ENV HYDRA_FULL_ERROR=1
 ENV LANG=C.UTF-8
@@ -79,9 +79,11 @@ ENV WANDB_API_KEY=cf9b815895ae10619fdbd62ce6664f90da83ce3a
 
 ENV PYTHONUNBUFFERED=TRUE
 ENV PYTHONDONTWRITEBYTECODE=TRUE
-ENV PATH="/self-supervised-speech-recognition:${PATH}"
 
 # Set up the program in the image
 COPY train /self-supervised-speech-recognition/
-RUN chmod +x train
+COPY copy_checkpoints.sh /self-supervised-speech-recognition/ 
+RUN chmod 777 train
+RUN chmod 777 copy_checkpoints.sh
+ENV PATH="/self-supervised-speech-recognition:${PATH}"
 ENV PATH="/self-supervised-speech-recognition/train:${PATH}"
