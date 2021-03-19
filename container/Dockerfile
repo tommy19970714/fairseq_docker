@@ -21,13 +21,12 @@ ENV PATH /opt/conda/bin:$PATH
 
 
 WORKDIR /
-
-RUN git clone https://github.com/mailong25/self-supervised-speech-recognition.git
-WORKDIR /self-supervised-speech-recognition
+RUN mkdir -p /opt/program
+WORKDIR /opt/program
 
 RUN mkdir libs
 RUN pip install soundfile sentencepiece gdown
-WORKDIR /self-supervised-speech-recognition/libs
+WORKDIR /opt/program/libs
 
 RUN git clone https://github.com/pytorch/fairseq.git
 WORKDIR fairseq
@@ -40,9 +39,9 @@ RUN apt install -y build-essential cmake libboost-system-dev libboost-thread-dev
 RUN apt-get install -y libsndfile1-dev libopenblas-dev libfftw3-dev libgflags-dev libgoogle-glog-dev
 
 
-WORKDIR /self-supervised-speech-recognition/libs
+WORKDIR /opt/program/libs
 RUN git clone https://github.com/kpu/kenlm.git
-WORKDIR /self-supervised-speech-recognition/libs/kenlm
+WORKDIR /opt/program/libs/kenlm
 RUN mkdir -p build
 WORKDIR build
 RUN cmake ..
@@ -51,21 +50,21 @@ RUN make -j 4
 #RUN apt install clang-9 clang-tools-9 clang-tidy-9 clang-format-9
 
 RUN pip install packaging
-WORKDIR /self-supervised-speech-recognition/libs
+WORKDIR /opt/program/libs
 RUN git clone -b v0.2 https://github.com/facebookresearch/wav2letter.git
-WORKDIR /self-supervised-speech-recognition/libs/wav2letter/bindings/python
-ENV KENLM_ROOT_DIR=/self-supervised-speech-recognition/libs/kenlm
+WORKDIR /opt/program/libs/wav2letter/bindings/python
+ENV KENLM_ROOT_DIR=/opt/program/libs/kenlm
 RUN rm -rf build
 RUN pip install -e .
 RUN pip uninstall -y numpy
 RUN pip install numpy
-RUN pip install wandb editdistance gdown sklearn deepspeed awscli
+RUN pip install wandb editdistance gdown sklearn deepspeed awscli urllib3
 
 RUN apt-get install -y tmux vim unzip wget
 
 RUN conda install -c conda-forge jupyterlab
 
-WORKDIR /self-supervised-speech-recognition/
+WORKDIR /opt/program/
 
 ENV HYDRA_FULL_ERROR=1
 ENV LANG=C.UTF-8
@@ -81,9 +80,9 @@ ENV PYTHONUNBUFFERED=TRUE
 ENV PYTHONDONTWRITEBYTECODE=TRUE
 
 # Set up the program in the image
-COPY train /self-supervised-speech-recognition/
-COPY copy_checkpoints.sh /self-supervised-speech-recognition/ 
-RUN chmod 777 train
-RUN chmod 777 copy_checkpoints.sh
-ENV PATH="/self-supervised-speech-recognition:${PATH}"
-ENV PATH="/self-supervised-speech-recognition/train:${PATH}"
+COPY train /opt/program/
+COPY copy_checkpoints.sh /opt/program/ 
+COPY copy_checkpoints.sh /opt/program/
+RUN mkdir config/pretraining
+COPY wav2vec2_base_librispeech.yaml /opt/program/config/pretraining/
+ENV PATH="/opt/program:${PATH}"
