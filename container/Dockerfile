@@ -83,6 +83,6 @@ ENV PYTHONDONTWRITEBYTECODE=TRUE
 COPY train /opt/program/
 COPY copy_checkpoints.sh /opt/program/ 
 COPY copy_checkpoints.sh /opt/program/
-RUN mkdir config/pretraining
+RUN mkdir -p config/pretraining
 COPY wav2vec2_base_librispeech.yaml /opt/program/config/pretraining/
 ENV PATH="/opt/program:${PATH}"
