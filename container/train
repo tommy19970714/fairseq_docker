@@ -15,15 +15,15 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--fairseq_path", default="libs/fairseq", type=str,
-                        required=True, help="Path to installed fairseq library")
+                        help="Path to installed fairseq library")
 
     parser.add_argument("--audio_path", default="/opt/ml/input/data/training", type=str,
-                        required=True, help="Path to unlabeled audio")
+                        help="Path to unlabeled audio")
 
-    parser.add_argument("--init_model", default="wav2vec_small.pt", required=False,
+    parser.add_argument("--init_model", default="wav2vec_small.pt",
                         type=str, help="Path to English pretrain wav2vec model")
 
-    parser.add_argument("--batch_size", default=1200000, required=False,
+    parser.add_argument("--batch_size", default=1200000,
                         type=int, help="Batch size, try to decrease this number if any CUDA memory problems occur")
 
     args = parser.parse_args(args=[])
