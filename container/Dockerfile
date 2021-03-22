@@ -67,7 +67,7 @@ WORKDIR /opt/program/
 ENV HYDRA_FULL_ERROR=1
 ENV LANG=C.UTF-8
 ENV LANGUAGE=en_US:
-ENV WANDB_API_KEY=cf9b815895ae10619fdbd62ce6664f90da83ce3a
+ENV WANDB_API_KEY=xxxx
 
 # Set some environment variables. PYTHONUNBUFFERED keeps Python from buffering our standard
 # output stream, which means that logs can be delivered to the user quickly. PYTHONDONTWRITEBYTECODE
