@@ -4,7 +4,7 @@
 
 # Required resources
  Unlabeled data (audios without transcriptions) of your own language.
-A good amount of unlabeled audios (eg. 500 hours) will significantly reduce the amount of labeled data needed, and also boost up the model performance. Youtube/Podcast is a great place to collect the data for your own language. Prepare an s3 bucket with the audio data in it.
+A good amount of unlabeled audios (e.g. 500 hours) will significantly reduce the amount of labeled data needed, and also boost up the model performance. Youtube/Podcast is a great place to collect the data for your own language. Prepare an s3 bucket with the audio data in it.
 
 
 # Install instruction
@@ -13,7 +13,7 @@ A good amount of unlabeled audios (eg. 500 hours) will significantly reduce the 
 1. Set WANDB_API_KEY in line 72 of `Dockerfile`.
 2. And set wandb project name of `wandb_project` in `wav2vec2_base_librispeech.yaml`
 
-## Upload docker to yor ECS
+## Upload docker to your ECS
 Before upload docker, you have to setup aws cli.
 Please check here: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
 
@@ -21,7 +21,7 @@ After you install aws cli, run `aws configure`.
 The region of the ecs where the docker will be uploaded must be the same region as the bucket where the dataset will be prepared.
 
 You can upload docker to run `build_and_push.sh`.
-The first parameter of shellscript is docker image name.
+The first parameter of the shell script is the docker image name.
 
 ```
 sh build_and_push.sh wav2vec2-pretrain
@@ -35,9 +35,9 @@ from sagemaker import get_execution_role
 role = get_execution_role()
 ```
 
-## Datset
+## Dataset
 
-For example, we will have an s3 bucket with the following structure There is no specification for naming the folders or wav files.
+For example, we will have an s3 bucket with the following structure. There is no specification for naming the folders or wav files.
 
 ```
 s3_backet
