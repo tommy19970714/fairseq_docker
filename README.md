@@ -35,7 +35,7 @@ from sagemaker import get_execution_role
 role = get_execution_role()
 ```
 
-## Datset
+## Dataset
 
 For example, we will have an s3 bucket with the following structure There is no specification for naming the folders or wav files.
 
