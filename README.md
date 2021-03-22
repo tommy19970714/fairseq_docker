@@ -27,13 +27,13 @@ The region of the ecs where the docker will be uploaded must be the same region 
 You can upload docker to run `build_and_push.sh`.
 The first parameter of the shell script is the docker image name.
 
-```
+```shell
 sh build_and_push.sh wav2vec2-pretrain
 ```
 
 ## Define IAM role
 
-```
+```python
 from sagemaker import get_execution_role
 
 role = get_execution_role()
@@ -43,7 +43,7 @@ role = get_execution_role()
 
 For example, we will have an s3 bucket with the following structure. There is no specification for naming the folders or wav files.
 
-```
+```txt
 s3_backet
 └── data
      ├── xxxx.wav
@@ -52,13 +52,13 @@ s3_backet
 ```
 
 Define the path of the s3 bucket you prepared.
-```
+```python
 data_location = 's3://{backetname}/{audio_foldername}'
 ```
 
 ## Create the session
 
-```
+```python
 import sagemaker as sage
 from time import gmtime, strftime
 
@@ -68,7 +68,7 @@ sess.default_bucket()
 
 ## Create an estimator and fit the model
 
-```
+```python
 import boto3
 
 account = sess.boto_session.client('sts').get_caller_identity()['Account']
@@ -90,6 +90,6 @@ model = sage.estimator.Estimator(image,
 
 Run train!
 
-```
+```python
 model.fit(data_location)
 ```
