@@ -1,19 +1,23 @@
 # Wav2Vec2.0 pretraining docker
- pre-training wav2vec docker for sagemaker.
- This docker is written with the assumption that it will be run by aws sagemaker.
+
+pre-training wav2vec docker for sagemaker.
+This docker is written with the assumption that it will be run by aws sagemaker.
 
 # Required resources
- Unlabeled data (audios without transcriptions) of your own language.
+
+Unlabeled data (audios without transcriptions) of your own language is required.
 A good amount of unlabeled audios (e.g. 500 hours) will significantly reduce the amount of labeled data needed, and also boost up the model performance. Youtube/Podcast is a great place to collect the data for your own language. Prepare an s3 bucket with the audio data in it.
 
 
 # Install instruction
 
 ## Wandb setup
+
 1. Set WANDB_API_KEY in line 72 of `Dockerfile`.
 2. And set wandb project name of `wandb_project` in `wav2vec2_base_librispeech.yaml`
 
 ## Upload docker to your ECS
+
 Before upload docker, you have to setup aws cli.
 Please check here: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
 
