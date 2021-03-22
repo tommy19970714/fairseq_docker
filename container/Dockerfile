@@ -47,8 +47,6 @@ WORKDIR build
 RUN cmake ..
 RUN make -j 4
 
-#RUN apt install clang-9 clang-tools-9 clang-tidy-9 clang-format-9
-
 RUN pip install packaging
 WORKDIR /opt/program/libs
 RUN git clone -b v0.2 https://github.com/facebookresearch/wav2letter.git
