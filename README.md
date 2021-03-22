@@ -1,7 +1,7 @@
 # Wav2Vec2.0 pretraining docker
  pre-training wav2vec docker for sagemaker.
  This docker is written with the assumption that it will be run by aws sagemaker.
- 
+
 # Required resources
  Unlabeled data (audios without transcriptions) of your own language.
 A good amount of unlabeled audios (eg. 500 hours) will significantly reduce the amount of labeled data needed, and also boost up the model performance. Youtube/Podcast is a great place to collect the data for your own language. Prepare an s3 bucket with the audio data in it.
@@ -41,7 +41,7 @@ For example, we will have an s3 bucket with the following structure There is no 
 
 ```
 s3_backet
-└── 960h
+└── data
      ├── xxxx.wav
      ├── xxxx.wav
      ....
@@ -49,7 +49,7 @@ s3_backet
 
 Define the path of the s3 bucket you prepared.
 ```
-data_location = 's3://wav2vec-pretrain-datasets/960h'
+data_location = 's3://{backetname}/{audio_foldername}'
 ```
 
 ## Create the session
@@ -72,8 +72,8 @@ region = sess.boto_session.region_name
 image = '{}.dkr.ecr.{}.amazonaws.com/wav2vec2-pretrain:latest'.format(account, region)
 
 # https://sagemaker.readthedocs.io/en/stable/api/training/estimators.html
-tree = sage.estimator.Estimator(image,
-                       role, 1, 'ml.p3.16xlarge',#ml.g4dn.xlarge#p4d.24xlarge#ml.p3.2xlarge
+model = sage.estimator.Estimator(image,
+                       role, 1, 'ml.p3.16xlarge',
                        volume_size=1000,
                        output_path="s3://{}/output".format(sess.default_bucket()),
                        checkpoint_s3_uri="s3://{}/checkpoints".format(sess.default_bucket()),
@@ -84,6 +84,8 @@ tree = sage.estimator.Estimator(image,
                        sagemaker_session=sess)
 ```
 
+Run train!
+
 ```
-tree.fit(data_location)
+model.fit(data_location)
 ```
